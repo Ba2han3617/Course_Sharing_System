@@ -1,0 +1,57 @@
+@model List<CourseNoteSharingSystem.ViewModels.NoteCardViewModel>
+@{
+    ViewBag.Title = "Manage Notes";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0"><i class="bi bi-file-earmark-text me-2"></i>All Notes</h4>
+    <span class="badge bg-primary fs-6">@Model.Count notes</span>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Uploader</th>
+                        <th>Course</th>
+                        <th>Type</th>
+                        <th>Downloads</th>
+                        <th>Likes</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var note in Model)
+                    {
+                        <tr>
+                            <td class="text-muted small">#@note.Id</td>
+                            <td>
+                                <a asp-controller="Notes" asp-action="Detail" asp-route-id="@note.Id"
+                                   class="fw-semibold text-decoration-none">@note.Title</a>
+                            </td>
+                            <td class="text-muted small">@note.UploaderName</td>
+                            <td class="text-muted small">@note.CourseName</td>
+                            <td><span class="badge file-badge-@note.FileType.ToUpper()">@note.FileType.ToUpper()</span></td>
+                            <td>@note.DownloadCount</td>
+                            <td>@note.LikeCount</td>
+                            <td>
+                                <form asp-action="DeleteNote" method="post" class="d-inline"
+                                      data-confirm="Remove this note permanently?">
+                                    <input type="hidden" name="id" value="@note.Id" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,131 @@
+@model CourseNoteSharingSystem.ViewModels.ProfileViewModel
+@{
+    ViewBag.Title = Model.FullName + "'s Profile";
+}
+
+<div class="page-header">
+    <div class="container">
+        <div class="d-flex align-items-center gap-4 flex-wrap">
+            @if (!string.IsNullOrEmpty(Model.ProfileImage))
+            {
+                <img src="@Model.ProfileImage" class="rounded-circle" style="width:80px;height:80px;object-fit:cover;border:3px solid rgba(255,255,255,.3)" />
+            }
+            else
+            {
+                <div class="rounded-circle bg-white d-flex align-items-center justify-content-center text-primary fw-bold"
+                     style="width:80px;height:80px;font-size:2rem">@Model.FullName[0]</div>
+            }
+            <div class="text-white">
+                <h1 class="fw-bold mb-1 h3">@Model.FullName</h1>
+                <div class="opacity-75 d-flex gap-3 flex-wrap">
+                    <span><i class="bi bi-envelope me-1"></i>@Model.Email</span>
+                    @if (!string.IsNullOrEmpty(Model.Department))
+                    { <span><i class="bi bi-building me-1"></i>@Model.Department</span> }
+                    <span><i class="bi bi-calendar me-1"></i>Joined @Model.CreatedAt.ToString("MMM yyyy")</span>
+                </div>
+                <span class="badge @(Model.Role == "Admin" ? "bg-warning text-dark" : "bg-white text-primary") mt-2">@Model.Role</span>
+            </div>
+            @if ((int?)ViewBag.UserId == Model.Id)
+            {
+                <a asp-controller="Profile" asp-action="Edit" class="btn btn-light ms-auto">
+                    <i class="bi bi-pencil me-2"></i>Edit Profile
+                </a>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <!-- Tabs -->
+    <ul class="nav nav-pills mb-4" id="profileTabs">
+        <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#uploaded">
+                <i class="bi bi-cloud-upload me-1"></i>Uploaded
+                <span class="badge bg-primary ms-1">@Model.UploadedNotes.Count</span>
+            </button>
+        </li>
+        @if ((int?)ViewBag.UserId == Model.Id)
+        {
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#liked">
+                    <i class="bi bi-heart me-1"></i>Liked
+                    <span class="badge bg-primary ms-1">@Model.LikedNotes.Count</span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#favorites">
+                    <i class="bi bi-bookmark me-1"></i>Favorites
+                    <span class="badge bg-primary ms-1">@Model.FavoriteNotes.Count</span>
+                </button>
+            </li>
+        }
+    </ul>
+
+    <div class="tab-content">
+        <!-- Uploaded Notes -->
+        <div class="tab-pane fade show active" id="uploaded">
+            @if (Model.UploadedNotes.Any())
+            {
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+                    @foreach (var note in Model.UploadedNotes)
+                    {
+                        <div class="col fade-in-up">
+                            @await Html.PartialAsync("_NoteCard", note)
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="bi bi-journal-x empty-icon"></i>
+                    <p class="text-muted mt-3">No notes uploaded yet.</p>
+                    @if ((int?)ViewBag.UserId == Model.Id)
+                    {
+                        <a asp-controller="Notes" asp-action="Upload" class="btn btn-primary">Upload First Note</a>
+                    }
+                </div>
+            }
+        </div>
+
+        <!-- Liked Notes -->
+        <div class="tab-pane fade" id="liked">
+            @if (Model.LikedNotes.Any())
+            {
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+                    @foreach (var note in Model.LikedNotes)
+                    {
+                        <div class="col fade-in-up">@await Html.PartialAsync("_NoteCard", note)</div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="bi bi-heart empty-icon"></i>
+                    <p class="text-muted mt-3">No liked notes yet.</p>
+                </div>
+            }
+        </div>
+
+        <!-- Favorite Notes -->
+        <div class="tab-pane fade" id="favorites">
+            @if (Model.FavoriteNotes.Any())
+            {
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+                    @foreach (var note in Model.FavoriteNotes)
+                    {
+                        <div class="col fade-in-up">@await Html.PartialAsync("_NoteCard", note)</div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="bi bi-bookmark empty-icon"></i>
+                    <p class="text-muted mt-3">No saved notes yet.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

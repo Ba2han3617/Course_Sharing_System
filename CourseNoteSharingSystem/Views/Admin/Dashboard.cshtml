@@ -1,0 +1,159 @@
+@model CourseNoteSharingSystem.ViewModels.AdminDashboardViewModel
+@{
+    ViewBag.Title = "Admin Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!-- Stat Cards -->
+<div class="row g-4 mb-5">
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-card-icon" style="background:rgba(99,102,241,.1);color:#6366f1">
+                <i class="bi bi-people-fill"></i>
+            </div>
+            <div>
+                <div class="stat-card-num">@Model.TotalUsers</div>
+                <div class="stat-card-label">Total Users</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-card-icon" style="background:rgba(16,185,129,.1);color:#10b981">
+                <i class="bi bi-file-earmark-text-fill"></i>
+            </div>
+            <div>
+                <div class="stat-card-num">@Model.TotalNotes</div>
+                <div class="stat-card-label">Total Notes</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-card-icon" style="background:rgba(245,158,11,.1);color:#f59e0b">
+                <i class="bi bi-download"></i>
+            </div>
+            <div>
+                <div class="stat-card-num">@Model.TotalDownloads</div>
+                <div class="stat-card-label">Total Downloads</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-card-icon" style="background:rgba(239,68,68,.1);color:#ef4444">
+                <i class="bi bi-chat-dots-fill"></i>
+            </div>
+            <div>
+                <div class="stat-card-num">@Model.TotalComments</div>
+                <div class="stat-card-label">Total Comments</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Monthly uploads chart -->
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+                <h5 class="fw-semibold mb-4"><i class="bi bi-bar-chart me-2"></i>Monthly Uploads (@DateTime.Now.Year)</h5>
+                <canvas id="uploadsChart" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top contributors -->
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+                <h5 class="fw-semibold mb-4"><i class="bi bi-trophy me-2"></i>Top Contributors</h5>
+                @foreach (var user in Model.MostActiveUsers)
+                {
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="avatar-sm rounded-circle bg-primary d-flex align-items-center justify-content-center text-white fw-bold flex-shrink-0">
+                            @user.FullName[0]
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="fw-semibold small">@user.FullName</div>
+                            <div class="text-muted" style="font-size:.75rem">@user.Department</div>
+                        </div>
+                        <span class="badge bg-primary">@user.NoteCount</span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Most downloaded notes -->
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <h5 class="fw-semibold mb-3"><i class="bi bi-download me-2"></i>Most Downloaded Notes</h5>
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th>Uploader</th>
+                                <th>Course</th>
+                                <th>Type</th>
+                                <th>Downloads</th>
+                                <th>Likes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{int rank = 1;}
+                            @foreach (var note in Model.MostDownloadedNotes)
+                            {
+                                <tr>
+                                    <td><span class="badge bg-secondary">@rank++</span></td>
+                                    <td><a asp-controller="Notes" asp-action="Detail" asp-route-id="@note.Id">@note.Title</a></td>
+                                    <td class="text-muted small">@note.UploaderName</td>
+                                    <td class="text-muted small">@note.CourseName</td>
+                                    <td><span class="badge file-badge-@note.FileType.ToUpper()">@note.FileType.ToUpper()</span></td>
+                                    <td><i class="bi bi-download me-1"></i>@note.DownloadCount</td>
+                                    <td><i class="bi bi-heart me-1"></i>@note.LikeCount</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+    const ctx = document.getElementById('uploadsChart');
+    const labels = [@Html.Raw(string.Join(",", Model.MonthlyUploads.Select(m => $"'{m.Month}'")))];
+    const data = [@string.Join(",", Model.MonthlyUploads.Select(m => m.Count))];
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels.length ? labels : ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+            datasets: [{
+                label: 'Uploads',
+                data: data.length ? data : [0,0,0,0,0,0,0,0,0,0,0,0],
+                backgroundColor: 'rgba(99,102,241,0.15)',
+                borderColor: '#6366f1',
+                borderWidth: 2,
+                borderRadius: 8,
+                hoverBackgroundColor: 'rgba(99,102,241,0.3)'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1 }, grid: { color: 'rgba(0,0,0,0.05)' } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+</script>
+}

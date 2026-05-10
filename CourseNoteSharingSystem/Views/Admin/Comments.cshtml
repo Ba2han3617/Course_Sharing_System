@@ -1,0 +1,56 @@
+@model List<CourseNoteSharingSystem.Models.Comment>
+@{
+    ViewBag.Title = "Manage Comments";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0"><i class="bi bi-chat-dots me-2"></i>All Comments</h4>
+    <span class="badge bg-primary fs-6">@Model.Count comments</span>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>User</th>
+                        <th>Note</th>
+                        <th>Comment</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var c in Model)
+                    {
+                        <tr>
+                            <td class="text-muted small">#@c.Id</td>
+                            <td class="small fw-semibold">@(c.User?.FullName ?? "–")</td>
+                            <td>
+                                <a asp-controller="Notes" asp-action="Detail" asp-route-id="@c.NoteId" class="small text-decoration-none">
+                                    Note #@c.NoteId
+                                </a>
+                            </td>
+                            <td class="small text-muted" style="max-width:300px">
+                                @(c.Content.Length > 80 ? c.Content[..80] + "…" : c.Content)
+                            </td>
+                            <td class="text-muted small">@c.CreatedAt.ToString("MMM dd, yyyy")</td>
+                            <td>
+                                <form asp-action="DeleteComment" method="post" class="d-inline"
+                                      data-confirm="Delete this comment?">
+                                    <input type="hidden" name="id" value="@c.Id" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

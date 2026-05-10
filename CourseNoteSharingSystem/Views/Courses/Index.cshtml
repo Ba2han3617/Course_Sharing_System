@@ -1,0 +1,79 @@
+@model List<CourseNoteSharingSystem.ViewModels.CourseSelectItem>
+@{
+    ViewBag.Title = "Courses";
+}
+
+<div class="page-header">
+    <div class="container">
+        <h1 class="fw-bold mb-1"><i class="bi bi-book me-2"></i>Courses</h1>
+        <p class="opacity-75 mb-0">Browse all available courses and their departments.</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <!-- Search / Filter bar -->
+    <form asp-action="Index" method="get" class="row g-3 mb-5">
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="input-group-text bg-transparent"><i class="bi bi-search"></i></span>
+                <input type="text" name="query" value="@ViewBag.Query" class="form-control" placeholder="Search courses..." />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <select name="department" class="form-select">
+                <option value="">All Departments</option>
+                @foreach (var dept in (List<string>)(ViewBag.Departments ?? new List<string>()))
+                {
+                    <option value="@dept" selected="@(ViewBag.SelectedDepartment == dept)">@dept</option>
+                }
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <a asp-action="Index" class="btn btn-outline-secondary ms-1">Reset</a>
+        </div>
+    </form>
+
+    @if (Model.Any())
+    {
+        <!-- Group by department -->
+        @foreach (var deptGroup in Model.GroupBy(c => c.Department).OrderBy(g => g.Key))
+        {
+            <div class="mb-5">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <i class="bi bi-building text-primary"></i>
+                    <h5 class="fw-bold mb-0">@deptGroup.Key</h5>
+                    <span class="badge bg-primary">@deptGroup.Count() courses</span>
+                </div>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+                    @foreach (var course in deptGroup)
+                    {
+                        <div class="col">
+                            <a asp-controller="Notes" asp-action="Index" asp-route-CourseId="@course.Id"
+                               class="card border-0 shadow-sm text-decoration-none note-card h-100">
+                                <div class="card-body p-3 d-flex align-items-center gap-3">
+                                    <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center flex-shrink-0"
+                                         style="width:40px;height:40px">
+                                        <i class="bi bi-book text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-semibold text-body">@course.CourseName</div>
+                                        <div class="text-muted small">@course.Department</div>
+                                    </div>
+                                    <i class="bi bi-arrow-right ms-auto text-muted"></i>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="bi bi-book-x empty-icon"></i>
+            <p class="text-muted mt-3">No courses found.</p>
+        </div>
+    }
+</div>

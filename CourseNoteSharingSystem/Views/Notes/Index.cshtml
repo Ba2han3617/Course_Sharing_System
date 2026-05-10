@@ -1,0 +1,158 @@
+@model CourseNoteSharingSystem.ViewModels.NoteSearchViewModel
+@{
+    ViewBag.Title = "Browse Notes";
+}
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="container">
+        <h1 class="fw-bold mb-1">Browse Course Notes</h1>
+        <p class="opacity-75 mb-0">Find and download notes for any course and department.</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-4">
+        <!-- ── Sidebar Filters ── -->
+        <div class="col-lg-3">
+            <div class="card border-0 shadow-sm sticky-top" style="top:80px">
+                <div class="card-body p-4">
+                    <h6 class="fw-semibold mb-3"><i class="bi bi-funnel me-2"></i>Filters</h6>
+                    <form asp-action="Index" method="get" id="filterForm">
+                        <!-- Search -->
+                        <div class="mb-3">
+                            <label class="form-label">Search</label>
+                            <input type="text" name="SearchQuery" value="@Model.SearchQuery"
+                                   class="form-control" placeholder="Title or uploader..." />
+                        </div>
+
+                        <!-- Course -->
+                        <div class="mb-3">
+                            <label class="form-label">Course</label>
+                            <select name="CourseId" class="form-select">
+                                <option value="">All Courses</option>
+                                @foreach (var c in Model.Courses)
+                                {
+                                    <option value="@c.Id" selected="@(Model.CourseId == c.Id)">@c.CourseName</option>
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Department -->
+                        <div class="mb-3">
+                            <label class="form-label">Department</label>
+                            <select name="Department" class="form-select">
+                                <option value="">All Departments</option>
+                                @foreach (var d in Model.Departments)
+                                {
+                                    <option value="@d" selected="@(Model.Department == d)">@d</option>
+                                }
+                            </select>
+                        </div>
+
+                        <!-- File Type -->
+                        <div class="mb-3">
+                            <label class="form-label">File Type</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                @foreach (var ft in new[] { "pdf", "docx", "pptx", "zip" })
+                                {
+                                    <div class="form-check">
+                                        <input type="radio" name="FileType" value="@ft" id="ft_@ft"
+                                               class="form-check-input" @(Model.FileType == ft ? "checked" : "") />
+                                        <label class="form-check-label" for="ft_@ft">@ft.ToUpper()</label>
+                                    </div>
+                                }
+                                <div class="form-check">
+                                    <input type="radio" name="FileType" value="" id="ft_all"
+                                           class="form-check-input" @(string.IsNullOrEmpty(Model.FileType) ? "checked" : "") />
+                                    <label class="form-check-label" for="ft_all">All</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sort -->
+                        <div class="mb-4">
+                            <label class="form-label">Sort By</label>
+                            <select name="SortBy" class="form-select">
+                                <option value="newest" selected="@(Model.SortBy == "newest")">Newest</option>
+                                <option value="mostdownloaded" selected="@(Model.SortBy == "mostdownloaded")">Most Downloaded</option>
+                                <option value="mostliked" selected="@(Model.SortBy == "mostliked")">Most Liked</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-search me-2"></i>Apply Filters
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-secondary w-100 mt-2">Reset</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Results ── -->
+        <div class="col-lg-9">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <span class="fw-semibold">@Model.TotalCount results</span>
+                    @if (!string.IsNullOrEmpty(Model.SearchQuery))
+                    {
+                        <span class="text-muted"> for "<em>@Model.SearchQuery</em>"</span>
+                    }
+                </div>
+                @if (ViewBag.IsAuthenticated == true)
+                {
+                    <a asp-controller="Notes" asp-action="Upload" class="btn btn-primary btn-sm">
+                        <i class="bi bi-cloud-upload me-1"></i>Upload
+                    </a>
+                }
+            </div>
+
+            @if (Model.Notes.Any())
+            {
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-4">
+                    @foreach (var note in Model.Notes)
+                    {
+                        <div class="col fade-in-up">
+                            @await Html.PartialAsync("_NoteCard", note)
+                        </div>
+                    }
+                </div>
+
+                <!-- Pagination -->
+                @if (Math.Ceiling((double)Model.TotalCount / Model.PageSize) > 1)
+                {
+                    var totalPages = (int)Math.Ceiling((double)Model.TotalCount / Model.PageSize);
+                    <nav class="mt-5">
+                        <ul class="pagination justify-content-center">
+                            @for (int p = 1; p <= totalPages; p++)
+                            {
+                                <li class="page-item @(p == Model.PageNumber ? "active" : "")">
+                                    <a class="page-link"
+                                       asp-action="Index"
+                                       asp-route-SearchQuery="@Model.SearchQuery"
+                                       asp-route-CourseId="@Model.CourseId"
+                                       asp-route-Department="@Model.Department"
+                                       asp-route-FileType="@Model.FileType"
+                                       asp-route-SortBy="@Model.SortBy"
+                                       asp-route-PageNumber="@p">@p</a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                }
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="bi bi-search empty-icon"></i>
+                    <h4 class="mt-3">No notes found</h4>
+                    <p class="text-muted">Try adjusting your filters or be the first to upload!</p>
+                    @if (ViewBag.IsAuthenticated == true)
+                    {
+                        <a asp-controller="Notes" asp-action="Upload" class="btn btn-primary mt-2">Upload a Note</a>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

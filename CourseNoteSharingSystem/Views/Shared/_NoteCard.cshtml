@@ -1,0 +1,55 @@
+@model CourseNoteSharingSystem.ViewModels.NoteCardViewModel
+
+@{
+    var icon = CourseNoteSharingSystem.Helpers.FileHelper.GetIcon(Model.FileType);
+    var stars = (int)Math.Round(Model.AverageRating);
+}
+
+<div class="note-card card h-100 border-0 shadow-sm">
+    <div class="card-body p-4">
+        <!-- File type badge + icon -->
+        <div class="d-flex justify-content-between align-items-start mb-3">
+            <i class="bi @icon fs-2"></i>
+            <span class="badge file-badge-@Model.FileType.ToUpper()">@Model.FileType.ToUpper()</span>
+        </div>
+
+        <!-- Title -->
+        <h6 class="fw-semibold mb-1 note-title">
+            <a asp-controller="Notes" asp-action="Detail" asp-route-id="@Model.Id" class="stretched-link text-decoration-none text-body">
+                @Model.Title
+            </a>
+        </h6>
+
+        <!-- Course -->
+        <p class="text-muted small mb-2">
+            <i class="bi bi-book me-1"></i>@Model.CourseName
+        </p>
+
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            <p class="text-muted small mb-3 note-desc">@Model.Description</p>
+        }
+
+        <!-- Stars -->
+        <div class="star-rating mb-2">
+            @for (int i = 1; i <= 5; i++)
+            {
+                <i class="bi @(i <= stars ? "bi-star-fill text-warning" : "bi-star text-muted")"></i>
+            }
+            <span class="small text-muted ms-1">@Model.AverageRating.ToString("0.0")</span>
+        </div>
+    </div>
+
+    <!-- Card footer -->
+    <div class="card-footer bg-transparent border-top-0 px-4 pb-3">
+        <div class="d-flex justify-content-between align-items-center small text-muted">
+            <div>
+                <i class="bi bi-person me-1"></i>@Model.UploaderName
+            </div>
+            <div class="d-flex gap-3">
+                <span><i class="bi bi-heart me-1"></i>@Model.LikeCount</span>
+                <span><i class="bi bi-download me-1"></i>@Model.DownloadCount</span>
+            </div>
+        </div>
+    </div>
+</div>

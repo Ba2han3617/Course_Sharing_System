@@ -1,0 +1,94 @@
+@model CourseNoteSharingSystem.DTOs.UploadNoteDto
+@{
+    ViewBag.Title = "Upload Note";
+    var courses = ViewBag.Courses as List<CourseNoteSharingSystem.ViewModels.CourseSelectItem> ?? new();
+}
+
+<div class="page-header">
+    <div class="container">
+        <h1 class="fw-bold mb-1"><i class="bi bi-cloud-upload me-2"></i>Upload a Note</h1>
+        <p class="opacity-75 mb-0">Share your knowledge with fellow students.</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-5">
+                    <form asp-action="Upload" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+
+                        <!-- Validation summary -->
+                        <div asp-validation-summary="All" class="alert alert-danger border-0 mb-4 d-none"
+                             id="validationAlert"></div>
+
+                        <!-- Title -->
+                        <div class="mb-4">
+                            <label asp-for="Title" class="form-label">Note Title *</label>
+                            <input asp-for="Title" class="form-control" placeholder="e.g. Week 5 – Sorting Algorithms" />
+                            <span asp-validation-for="Title" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Course -->
+                        <div class="mb-4">
+                            <label asp-for="CourseId" class="form-label">Course *</label>
+                            <select asp-for="CourseId" class="form-select">
+                                <option value="">Select a course...</option>
+                                @foreach (var c in courses)
+                                {
+                                    <option value="@c.Id">@c.CourseName – @c.Department</option>
+                                }
+                            </select>
+                            <span asp-validation-for="CourseId" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <label asp-for="Description" class="form-label">Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="4"
+                                      placeholder="Briefly describe what this note covers..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <!-- File Upload Zone -->
+                        <div class="mb-4">
+                            <label class="form-label">File *</label>
+                            <div class="upload-zone" id="uploadZone">
+                                <div class="upload-icon mb-3">
+                                    <i class="bi bi-cloud-arrow-up"></i>
+                                </div>
+                                <h5 class="fw-semibold mb-1">Drag &amp; drop your file here</h5>
+                                <p class="text-muted small mb-3">or click to browse</p>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <span class="badge bg-danger bg-opacity-10 text-danger">PDF</span>
+                                    <span class="badge bg-primary bg-opacity-10 text-primary">DOCX</span>
+                                    <span class="badge bg-warning bg-opacity-10 text-warning">PPTX</span>
+                                    <span class="badge bg-success bg-opacity-10 text-success">ZIP</span>
+                                </div>
+                                <small class="text-muted d-block mt-2">Max file size: 50 MB</small>
+                            </div>
+                            <input type="file" name="File" id="fileInput" accept=".pdf,.docx,.pptx,.zip"
+                                   class="d-none" required />
+                            <div id="filePreview" class="mt-3"></div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="bi bi-cloud-upload me-2"></i>Upload Note
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    // Show validation alert if there are errors
+    const summary = document.querySelector('[data-valmsg-summary]');
+    if (summary && summary.querySelectorAll('li').length > 0) {
+        document.getElementById('validationAlert')?.classList.remove('d-none');
+    }
+</script>
+}

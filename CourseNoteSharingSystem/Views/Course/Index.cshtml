@@ -1,0 +1,141 @@
+@model List<CourseNoteSharingSystem.ViewModels.CourseListViewModel>
+@{
+    ViewBag.Title = "Courses Management";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold mb-0">Course Management</h3>
+        <p class="text-muted small">Manage all university courses in the system.</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary shadow-sm">
+        <i class="bi bi-plus-lg me-2"></i>Add New Course
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="p-3 border-bottom d-flex justify-content-between align-items-center bg-light bg-opacity-50">
+            <div class="d-flex align-items-center gap-2">
+                <span class="text-muted small">Show</span>
+                <select class="form-select form-select-sm" style="width: 70px;">
+                    <option>10</option>
+                    <option>25</option>
+                    <option>50</option>
+                </select>
+                <span class="text-muted small">entries</span>
+            </div>
+            <div class="search-box" style="width: 250px;">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                    <input type="text" id="courseSearch" class="form-control border-start-0" placeholder="Search courses...">
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" id="coursesTable">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4 py-3">Course Name</th>
+                        <th class="py-3">Code</th>
+                        <th class="py-3">Department</th>
+                        <th class="py-3">Semester</th>
+                        <th class="py-3 text-center">Created Date</th>
+                        <th class="pe-4 py-3 text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var course in Model)
+                    {
+                        <tr>
+                            <td class="ps-4">
+                                <div class="fw-semibold">@course.CourseName</div>
+                            </td>
+                            <td><span class="badge bg-secondary-subtle text-secondary fw-medium">@course.Code</span></td>
+                            <td><span class="text-muted small">@course.Department</span></td>
+                            <td><span class="badge bg-info-subtle text-info fw-medium">@course.Semester</span></td>
+                            <td class="text-center text-muted small">@course.CreatedAt.ToString("MMM dd, yyyy")</td>
+                            <td class="pe-4 text-end">
+                                <div class="btn-group">
+                                    <a asp-action="Details" asp-route-id="@course.Id" class="btn btn-sm btn-icon" title="View Details">
+                                        <i class="bi bi-eye text-primary"></i>
+                                    </a>
+                                    <a asp-action="Edit" asp-route-id="@course.Id" class="btn btn-sm btn-icon" title="Edit Course">
+                                        <i class="bi bi-pencil text-warning"></i>
+                                    </a>
+                                    <form asp-action="Delete" asp-route-id="@course.Id" method="post" class="d-inline delete-form">
+                                        @Html.AntiForgeryToken()
+                                        <button type="button" class="btn btn-sm btn-icon delete-btn" title="Delete Course">
+                                            <i class="bi bi-trash text-danger"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-5 text-muted">
+                                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                No courses found. Add your first course to get started.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="p-3 border-top d-flex justify-content-between align-items-center">
+            <div class="text-muted small">
+                Showing 1 to @Model.Count of @Model.Count entries
+            </div>
+            <nav>
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            // Search functionality
+            $("#courseSearch").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#coursesTable tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+            // SweetAlert Delete Confirmation
+            $(".delete-btn").on("click", function (e) {
+                const form = $(this).closest("form");
+                
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This course and all its related data will be permanently deleted!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#ef4444',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel',
+                    background: document.documentElement.dataset.bsTheme === 'dark' ? '#1f2937' : '#fff',
+                    color: document.documentElement.dataset.bsTheme === 'dark' ? '#fff' : '#000'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
+}

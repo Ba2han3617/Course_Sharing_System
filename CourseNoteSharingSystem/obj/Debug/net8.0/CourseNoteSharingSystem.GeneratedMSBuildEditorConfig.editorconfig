@@ -1,0 +1,137 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = CourseNoteSharingSystem
+build_property.RootNamespace = CourseNoteSharingSystem
+build_property.ProjectDir = c:\Users\Batuhan\OneDrive\Masaüstü\Course_Sharing_System-batu\CourseNoteSharingSystem\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = c:\Users\Batuhan\OneDrive\Masaüstü\Course_Sharing_System-batu\CourseNoteSharingSystem
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Admin/Comments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ29tbWVudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Admin/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Admin/Notes.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTm90ZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Admin/Users.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cVXNlcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Auth/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxBY2Nlc3NEZW5pZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Auth/AdminLogin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxBZG1pbkxvZ2luLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Auth/ForgotPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxGb3Jnb3RQYXNzd29yZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Auth/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Auth/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Courses/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Course/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Course/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Course/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Course/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Notes/Detail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90ZXNcRGV0YWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Notes/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90ZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Notes/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90ZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Notes/Upload.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90ZXNcVXBsb2FkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Profile/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmlsZVxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Profile/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmlsZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Shared/_AdminLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pbkxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Shared/_NoteCard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Ob3RlQ2FyZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Batuhan/OneDrive/Masaüstü/Course_Sharing_System-batu/CourseNoteSharingSystem/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-synclwg5ix

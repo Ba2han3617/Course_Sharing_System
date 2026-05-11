@@ -1,0 +1,180 @@
+@model CourseNoteSharingSystem.ViewModels.LoginViewModel
+@{
+    Layout = null;
+    ViewBag.Title = "Admin Login";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login | CourseNotes</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #475569;
+            --primary-dark: #1e293b;
+            --secondary: #64748b;
+            --bg-gradient: linear-gradient(135deg, #1e293b 0%, #334155 60%, #475569 100%);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .brand-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: -1px;
+            text-decoration: none;
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #475569;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0.8rem 1rem;
+        }
+
+        .btn-login {
+            background: #1e293b;
+            color: #fff;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            padding: 0.9rem;
+            width: 100%;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-login:hover {
+            background: #0f172a;
+            transform: translateY(-1px);
+        }
+
+        .error-summary {
+            background: #fef2f2;
+            border: 1px solid #fee2e2;
+            color: #b91c1c;
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .admin-badge {
+            display: inline-block;
+            background: #fee2e2;
+            color: #b91c1c;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <div class="text-center mb-5">
+            <a href="/" class="brand-logo">
+                <i class="bi bi-shield-lock-fill"></i>
+                <span>Admin Login</span>
+            </a>
+            <p class="text-muted mt-2">Administrative Access Portal</p>
+        </div>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="error-summary">
+                <i class="bi bi-exclamation-circle-fill me-2"></i>
+                @Html.ValidationSummary(true, "")
+            </div>
+        }
+
+        <form asp-action="AdminLogin" method="post" asp-route-returnUrl="@ViewBag.ReturnUrl">
+            @Html.AntiForgeryToken()
+            
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">Admin Email</label>
+                <input asp-for="Email" class="form-control" placeholder="admin@cnss.edu" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label">Password</label>
+                <input asp-for="Password" type="password" class="form-control" placeholder="••••••••" />
+            </div>
+
+            <div class="mb-4">
+                <div class="form-check">
+                    <input asp-for="RememberMe" class="form-check-input" type="checkbox" id="remCheck" />
+                    <label class="form-check-label small text-muted" for="remCheck">
+                        Keep me signed in
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-login">
+                Access Admin Dashboard
+            </button>
+        </form>
+
+        <div class="text-center mt-4">
+            <a href="/" class="text-muted small text-decoration-none">
+                <i class="bi bi-arrow-left me-1"></i> Back to Site
+            </a>
+        </div>
+    </div>
+</body>
+</html>

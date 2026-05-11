@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(ViewBag.Title != null ? $"{ViewBag.Title} | Admin – CourseNotes" : "Admin – CourseNotes")</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+
+<!-- Top bar -->
+<nav class="navbar cnss-navbar sticky-top px-4 d-flex justify-content-between align-items-center" style="height:60px">
+    <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-sm btn-icon d-lg-none" id="sidebarToggle">
+            <i class="bi bi-list fs-5"></i>
+        </button>
+        <a class="navbar-brand fw-bold mb-0" asp-controller="Home" asp-action="Index">
+            <i class="bi bi-journal-bookmark-fill text-primary me-1"></i>
+            <span class="brand-text">CourseNotes</span>
+        </a>
+        <span class="badge bg-warning text-dark">Admin</span>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-sm btn-icon" id="darkModeToggle">
+            <i class="bi bi-moon-fill" id="darkIcon"></i>
+        </button>
+        <a asp-controller="Profile" asp-action="Index" class="btn btn-sm btn-outline-primary">
+            <i class="bi bi-person me-1"></i>@ViewBag.UserName
+        </a>
+        <a asp-controller="Auth" asp-action="Logout" class="btn btn-sm btn-outline-danger">
+            <i class="bi bi-box-arrow-right"></i>
+        </a>
+    </div>
+</nav>
+
+<div class="d-flex" style="min-height:calc(100vh - 60px)">
+    <!-- Sidebar -->
+    <div class="admin-sidebar d-none d-lg-block" style="width:240px;flex-shrink:0" id="adminSidebar">
+        <nav>
+            <a asp-controller="Admin" asp-action="Dashboard" class="admin-nav-link @(ViewBag.Title == "Admin Dashboard" ? "active" : "")">
+                <i class="bi bi-speedometer2"></i>Dashboard
+            </a>
+            <hr class="mx-3 opacity-25" />
+            <div class="px-3 mb-2 small text-uppercase fw-bold text-muted" style="letter-spacing: 0.05rem; font-size: 0.7rem;">Management</div>
+            <a asp-controller="Course" asp-action="Index" class="admin-nav-link @(ViewBag.Title?.ToString()?.Contains("Courses") == true && !ViewBag.Title?.ToString()?.Contains("Add") == true ? "active" : "")">
+                <i class="bi bi-book"></i>All Courses
+            </a>
+            <a asp-controller="Course" asp-action="Create" class="admin-nav-link @(ViewBag.Title?.ToString()?.Contains("Add New Course") == true ? "active" : "")">
+                <i class="bi bi-plus-circle"></i>Add Course
+            </a>
+            <a asp-controller="Admin" asp-action="Users" class="admin-nav-link @(ViewBag.Title?.ToString()?.Contains("Users") == true ? "active" : "")">
+                <i class="bi bi-people"></i>Users
+            </a>
+            <a asp-controller="Admin" asp-action="Notes" class="admin-nav-link @(ViewBag.Title?.ToString()?.Contains("Notes") == true ? "active" : "")">
+                <i class="bi bi-file-earmark-text"></i>Notes
+            </a>
+            <a asp-controller="Admin" asp-action="Comments" class="admin-nav-link @(ViewBag.Title?.ToString()?.Contains("Comments") == true ? "active" : "")">
+                <i class="bi bi-chat-dots"></i>Comments
+            </a>
+            <hr class="mx-3 opacity-25" />
+            <a asp-controller="Home" asp-action="Index" class="admin-nav-link">
+                <i class="bi bi-house"></i>Back to Site
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main content -->
+    <main class="flex-grow-1 p-4">
+        <!-- Breadcrumb -->
+        <nav class="mb-4">
+            <ol class="breadcrumb small">
+                <li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Dashboard">Admin</a></li>
+                <li class="breadcrumb-item active">@ViewBag.Title</li>
+            </ol>
+        </nav>
+
+        <!-- Toast container -->
+        <div class="position-fixed bottom-0 end-0 p-3" id="toastContainer" style="z-index:1090">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="toast align-items-center text-bg-success border-0 show">
+                    <div class="d-flex">
+                        <div class="toast-body">@TempData["SuccessMessage"]</div>
+                        <button class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    </div>
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="toast align-items-center text-bg-danger border-0 show">
+                    <div class="d-flex">
+                        <div class="toast-body">@TempData["ErrorMessage"]</div>
+                        <button class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @RenderBody()
+    </main>
+</div>
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js"></script>
+<script>
+    document.querySelectorAll('.toast.show').forEach(el => new bootstrap.Toast(el, { delay: 4000 }).show());
+    document.getElementById('sidebarToggle')?.addEventListener('click', () => {
+        document.getElementById('adminSidebar').classList.toggle('d-none');
+    });
+    document.querySelectorAll('form[data-confirm]').forEach(f => {
+        f.addEventListener('submit', e => { if (!confirm(f.dataset.confirm)) e.preventDefault(); });
+    });
+</script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

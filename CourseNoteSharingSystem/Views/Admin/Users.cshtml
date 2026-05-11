@@ -1,0 +1,72 @@
+@model List<CourseNoteSharingSystem.ViewModels.AdminUserViewModel>
+@{
+    ViewBag.Title = "Manage Users";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0"><i class="bi bi-people me-2"></i>All Users</h4>
+    <span class="badge bg-primary fs-6">@Model.Count users</span>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                        <th>Role</th>
+                        <th>Joined</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td class="text-muted small">#@user.Id[..8]</td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="avatar-sm rounded-circle bg-primary d-flex align-items-center justify-content-center text-white fw-bold flex-shrink-0" style="width:32px;height:32px;font-size:.85rem">
+                                        @user.FullName[0]
+                                    </div>
+                                    <a asp-controller="Profile" asp-action="View" asp-route-id="@user.Id" class="fw-semibold text-decoration-none">
+                                        @user.FullName
+                                    </a>
+                                </div>
+                            </td>
+                            <td class="text-muted small">@user.Email</td>
+                            <td class="text-muted small">@(user.Department ?? "–")</td>
+                            <td>
+                                <span class="badge @(user.Role == "Admin" ? "bg-warning text-dark" : "bg-primary bg-opacity-10 text-primary")">
+                                    @user.Role
+                                </span>
+                            </td>
+                            <td class="text-muted small">@user.CreatedAt.ToString("MMM dd, yyyy")</td>
+                            <td>
+                                @if (user.Role != "Admin")
+                                {
+                                    <form asp-action="DeleteUser" method="post" class="d-inline"
+                                          data-confirm="Delete user @user.FullName? This will remove all their content.">
+                                        <input type="hidden" name="id" value="@user.Id" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">Protected</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -8,7 +8,7 @@
         <div class="d-flex align-items-center gap-4 flex-wrap">
             @if (!string.IsNullOrEmpty(Model.ProfileImage))
             {
-                <img src="@Model.ProfileImage" class="rounded-circle" style="width:80px;height:80px;object-fit:cover;border:3px solid rgba(255,255,255,.3)" />
+                <img src="@Model.ProfileImage?v=@DateTime.Now.Ticks" class="rounded-circle" style="width:80px;height:80px;object-fit:cover;border:3px solid rgba(255,255,255,.3)" />
             }
             else
             {

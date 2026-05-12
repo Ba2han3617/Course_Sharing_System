@@ -71,7 +71,7 @@
                         <a class="nav-link dropdown-toggle d-flex align-items-center gap-2 p-0" href="#" data-bs-toggle="dropdown">
                             @if (ViewBag.UserAvatar != null)
                             {
-                                <img src="@ViewBag.UserAvatar" class="avatar-sm rounded-circle" alt="avatar" />
+                                <img src="@ViewBag.UserAvatar?v=@DateTime.Now.Ticks" class="avatar-sm rounded-circle" alt="avatar" />
                             }
                             else
                             {

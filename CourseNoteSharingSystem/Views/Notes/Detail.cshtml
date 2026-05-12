@@ -114,7 +114,7 @@
                                     <div class="d-flex align-items-start gap-3">
                                         @if (!string.IsNullOrEmpty(comment.UserAvatar))
                                         {
-                                            <img src="@comment.UserAvatar" class="avatar-sm rounded-circle" alt="@comment.UserName" />
+                                            <img src="@comment.UserAvatar?v=@DateTime.Now.Ticks" class="avatar-sm rounded-circle" alt="@comment.UserName" />
                                         }
                                         else
                                         {

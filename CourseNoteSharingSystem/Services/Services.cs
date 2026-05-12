@@ -1,8 +1,13 @@
+using System.Security.Claims;
 using CourseNoteSharingSystem.DTOs;
+
 using CourseNoteSharingSystem.Models;
 using CourseNoteSharingSystem.Repositories;
 using CourseNoteSharingSystem.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+
 
 namespace CourseNoteSharingSystem.Services
 {
@@ -196,7 +201,16 @@ namespace CourseNoteSharingSystem.Services
     {
         private readonly IUserRepository _users;
         private readonly INoteRepository _notes;
-        public ProfileService(IUserRepository users, INoteRepository notes) { _users = users; _notes = notes; }
+        private readonly IWebHostEnvironment _environment;
+        private readonly UserManager<User> _userManager;
+
+        public ProfileService(IUserRepository users, INoteRepository notes, IWebHostEnvironment environment, UserManager<User> userManager)
+        {
+            _users = users;
+            _notes = notes;
+            _environment = environment;
+            _userManager = userManager;
+        }
 
         public async Task<ProfileViewModel?> GetProfileAsync(string userId)
         {
@@ -214,8 +228,64 @@ namespace CourseNoteSharingSystem.Services
         {
             var user = await _users.GetByIdAsync(userId);
             if (user == null) return (false, "User not found.");
+
             user.FullName = dto.FullName;
             user.Department = dto.Department;
+
+            // 1. Password Change
+            if (!string.IsNullOrWhiteSpace(dto.NewPassword))
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var result = await _userManager.ResetPasswordAsync(user, token, dto.NewPassword);
+                if (!result.Succeeded)
+                {
+                    return (false, string.Join(", ", result.Errors.Select(e => e.Description)));
+                }
+            }
+
+            // 2. Profile Image Upload
+            if (dto.ProfileImage != null)
+            {
+                var ext = Path.GetExtension(dto.ProfileImage.FileName).ToLower();
+                var allowed = new[] { ".jpg", ".jpeg", ".png", ".webp" };
+                if (!allowed.Contains(ext)) return (false, "Invalid image format. Use JPG, PNG or WebP.");
+
+                if (dto.ProfileImage.Length > 5 * 1024 * 1024) return (false, "File too large. Max 5MB.");
+
+                var uploadDir = Path.Combine(_environment.WebRootPath, "uploads", "profiles");
+                if (!Directory.Exists(uploadDir)) Directory.CreateDirectory(uploadDir);
+
+                // Delete old image
+                if (!string.IsNullOrEmpty(user.ProfileImage) && user.ProfileImage.StartsWith("/uploads/profiles/"))
+                {
+                    var oldPath = Path.Combine(_environment.WebRootPath, user.ProfileImage.TrimStart('/'));
+                    if (System.IO.File.Exists(oldPath)) System.IO.File.Delete(oldPath);
+                }
+
+                var fileName = $"{Guid.NewGuid()}{ext}";
+                var filePath = Path.Combine(uploadDir, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await dto.ProfileImage.CopyToAsync(stream);
+                }
+
+                user.ProfileImage = $"/uploads/profiles/{fileName}";
+            }
+
+            // 3. Update Claims
+            var claims = await _userManager.GetClaimsAsync(user);
+            var fullNameClaim = claims.FirstOrDefault(c => c.Type == "FullName");
+            if (fullNameClaim != null) await _userManager.ReplaceClaimAsync(user, fullNameClaim, new Claim("FullName", user.FullName));
+            else await _userManager.AddClaimAsync(user, new Claim("FullName", user.FullName));
+
+            var profileImageClaim = claims.FirstOrDefault(c => c.Type == "ProfileImage");
+            if (!string.IsNullOrEmpty(user.ProfileImage))
+            {
+                if (profileImageClaim != null) await _userManager.ReplaceClaimAsync(user, profileImageClaim, new Claim("ProfileImage", user.ProfileImage));
+                else await _userManager.AddClaimAsync(user, new Claim("ProfileImage", user.ProfileImage));
+            }
+
             await _users.UpdateAsync(user);
             await _users.SaveChangesAsync();
             return (true, null);

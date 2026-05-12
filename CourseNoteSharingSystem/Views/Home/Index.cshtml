@@ -151,7 +151,7 @@
                             <div class="contributor-card">
                                 @if (!string.IsNullOrEmpty(user.ProfileImage))
                                 {
-                                    <img src="@user.ProfileImage" class="contributor-avatar" alt="@user.FullName" />
+                                    <img src="@user.ProfileImage?v=@DateTime.Now.Ticks" class="contributor-avatar" alt="@user.FullName" />
                                 }
                                 else
                                 {

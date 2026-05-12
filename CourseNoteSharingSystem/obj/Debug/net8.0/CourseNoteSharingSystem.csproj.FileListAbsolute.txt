@@ -214,3 +214,4 @@ C:\Users\Batuhan\OneDrive\Masaüstü\Course_Sharing_System-batu\CourseNoteSharin
 C:\Users\Batuhan\OneDrive\Masaüstü\Course_Sharing_System-batu\CourseNoteSharingSystem\obj\Debug\net8.0\CourseNoteSharingSystem.pdb
 C:\Users\Batuhan\OneDrive\Masaüstü\Course_Sharing_System-batu\CourseNoteSharingSystem\obj\Debug\net8.0\CourseNoteSharingSystem.genruntimeconfig.cache
 C:\Users\Batuhan\OneDrive\Masaüstü\Course_Sharing_System-batu\CourseNoteSharingSystem\obj\Debug\net8.0\ref\CourseNoteSharingSystem.dll
+C:\Users\Batuhan\OneDrive\Masaüstü\Course_Sharing_System-batu\CourseNoteSharingSystem\obj\Debug\net8.0\CourseNoteSharingSystem.sourcelink.json

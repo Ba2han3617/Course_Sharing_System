@@ -1,4 +1,3 @@
-# Course_Sharing_System
 
 # Course Note Sharing System
 
